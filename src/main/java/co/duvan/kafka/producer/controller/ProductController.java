@@ -1,5 +1,6 @@
 package co.duvan.kafka.producer.controller;
 
+import co.duvan.kafka.producer.services.ProductService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -12,11 +13,20 @@ import org.springframework.web.bind.annotation.RestController;
 public class ProductController {
 
     //* Vars
+    private final ProductService service;
+
+    //* Constructor
+    public ProductController(ProductService service) {
+        this.service = service;
+    }
 
     //* Methods
     @PostMapping
-    public ResponseEntity<CreateProductRestModel> createProduct(@RequestBody CreateProductRestModel product) {
-        return ResponseEntity.status(HttpStatus.CREATED).body(product);
+    public ResponseEntity<String> createProduct(@RequestBody CreateProductRestModel product) {
+
+        String productId = service.createProduct(product);
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(productId);
     }
 
 
