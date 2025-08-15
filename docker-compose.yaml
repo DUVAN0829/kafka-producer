@@ -1,6 +1,7 @@
 version: '3.8'
 
 services:
+
   kafka1:
     image: apache/kafka:latest
     container_name: broker1
