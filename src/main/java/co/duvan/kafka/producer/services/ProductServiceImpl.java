@@ -16,7 +16,7 @@ public class ProductServiceImpl implements ProductService {
 
     //* Vars
     private final KafkaTemplate<String, ProductCreatedEvent> kafkaTemplate;
-    private final Logger logger = LoggerFactory.getLogger(this.getClass());
+    private final Logger LOGGER = LoggerFactory.getLogger(this.getClass());
 
     //* Constructor
     public ProductServiceImpl(KafkaTemplate<String, ProductCreatedEvent> kafkaTemplate) {
@@ -25,25 +25,15 @@ public class ProductServiceImpl implements ProductService {
 
     //* Methods
     @Override
-    public String createProduct(CreateProductRestModel productRestModel) {
+    public String createProduct(CreateProductRestModel productRestModel) throws Exception {
 
         String productId = UUID.randomUUID().toString();
 
         ProductCreatedEvent productCreatedEvent = new ProductCreatedEvent(productId, productRestModel.getTittle(), productRestModel.getPrice(), productRestModel.getQuantity());
 
-        CompletableFuture<SendResult<String, ProductCreatedEvent>> completableFuture = kafkaTemplate.send("product-created-events-topic", productId, productCreatedEvent);
+        SendResult<String, ProductCreatedEvent> completableFuture = kafkaTemplate.send("product-created-events-topic", productId, productCreatedEvent).get();
 
-        completableFuture.whenComplete((result, exception) -> {
-
-            if(exception != null) {
-                logger.error("***** Failed to send message {}", exception.getMessage());
-            } else {
-                logger.info("***** Message sent successfully {}", result.getRecordMetadata());
-            }
-
-        });
-
-        logger.info("***** Returning product id");
+        LOGGER.info("***** Returning product id");
 
         return productId;
     }

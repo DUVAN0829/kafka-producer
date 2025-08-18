@@ -4,6 +4,6 @@ import co.duvan.kafka.producer.controller.CreateProductRestModel;
 
 public interface ProductService {
 
-    String createProduct(CreateProductRestModel productRestModel);
+    String createProduct(CreateProductRestModel productRestModel) throws Exception;
 
 }
