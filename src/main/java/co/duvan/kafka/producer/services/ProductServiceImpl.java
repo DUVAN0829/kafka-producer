@@ -36,12 +36,14 @@ public class ProductServiceImpl implements ProductService {
         completableFuture.whenComplete((result, exception) -> {
 
             if(exception != null) {
-                logger.error("Failed to send message {}", exception.getMessage());
+                logger.error("***** Failed to send message {}", exception.getMessage());
             } else {
-                logger.info("Message sent successfully {}", result.getRecordMetadata());
+                logger.info("***** Message sent successfully {}", result.getRecordMetadata());
             }
 
         });
+
+        logger.info("***** Returning product id");
 
         return productId;
     }
