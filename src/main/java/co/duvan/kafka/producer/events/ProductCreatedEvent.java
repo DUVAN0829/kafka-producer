@@ -14,7 +14,8 @@ public class ProductCreatedEvent {
     public ProductCreatedEvent() {
     }
 
-    public ProductCreatedEvent(String tittle, BigDecimal price, Integer quantity) {
+    public ProductCreatedEvent(String productId, String tittle, BigDecimal price, Integer quantity) {
+        this.productId = productId;
         this.tittle = tittle;
         this.price = price;
         this.quantity = quantity;
